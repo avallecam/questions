@@ -1,0 +1,175 @@
+---
+title: "Q&As"
+format: html
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction
+
+```
+You are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.
+```
+
+```
+NOT USED: Your can use packages from the tidyverse to manage data object.
+```
+
+## Q1
+
+Question: How to calculate the weekly growth rate of an outbreak? 
+
+Conditions: 
+- Use the linelist from the Simulated Ebola outbreak ebola_sim_clean object from the outbreaks R package. 
+- Use the "date of onset" column to calculate the weekly growth rate. 
+- Keep the first 20 weeks of the period of the analysis.
+
+```{r}
+# Load required packages
+library(outbreaks)
+library(i2extras)
+library(dplyr)
+
+# Load the simulated Ebola outbreak data linelist
+raw_dat <- ebola_sim_clean$linelist
+
+# Convert the data to an incidence object
+dat <- incidence(
+  x = raw_dat, 
+  date_index = "date_of_onset",
+  interval = "week"
+)
+
+# Filter the dataset to keep the first 20 weeks. 
+dat_period <- dat[1:20,]
+
+# Model the incidence
+out <- fit_curve(dat_period, model = "poisson", alpha = 0.05)
+
+# Print the result
+growth_rate(out)
+```
+
+### Explanation
+
+- for a weekly rate use a week interval
+- An incidence2 object provides observations in descendant order with respect to time 
+- using the "date of onset" column
+- interval by week
+
+- We begin by loading the required packages, "outbreaks" and "tidyverse", using the library() function.
+- Next, we load the simulated Ebola outbreak data using the data() function from the "outbreaks" package.
+- We filter the data to keep the first 20 weeks of the outbreak using the %>% pipe operator and the filter() function from the "dplyr" package.
+- To calculate the weekly growth rate, we group the data by the floor date of the onset date using the group_by() function.
+- We then use the summarize() function to calculate the number of cases per week.
+- Finally, we calculate the growth rate by taking the difference between consecutive weekly cases, dividing it by the lagged weekly cases, and multiplying by 100 to express it as a percentage.
+- The growth rate data is stored in the growth_rate data frame, and we print it using the print() function.
+
+## Q2
+
+Question: How to generate the effective reproductive number from the growth rate?
+
+1. Is there a relationship between the growth rate and rt?
+
+> i2extras and epitrix
+
+```{r}
+
+```
+
+## Q3
+
+2. How to know if an epidemic is under control? 
+
+> epiestim
+
+need to implement complementary intervention measures?
+
+Can you estimate the time-varying reproduction number (Rt) of the outbreak?
+
+```{r}
+library(EpiEstim)
+
+# Import data
+data <- read.csv("outbreak_data.csv")
+
+# Format data
+data$date <- as.Date(data$date)
+cases <- ts(data$cases, start = 1, frequency = 7)
+
+# Estimate R
+epiestim <- estimate_R(cases, method="parametric_si",
+                   	config=list(mean_si = 5, std_si = 1),
+                   	min.cases=10, maxLikelihood = FALSE)
+
+```
+
+## Q4
+
+2. how can I took into account the reporting delays for the rt?
+
+> https://mrc-ide.github.io/EpiEstim/articles/alternative_software.html
+
+```{r}
+
+```
+
+## Q5
+
+1. Can you develop a predictive model to forecast the future trajectory of the outbreak?
+
+> projections
+> bpmodels
+
+how is the outbreak likely to develop over the next weeks?
+what are the forecasted number of cases over next weeks?
+what are the hospital bed requirements for next weeks?
+
+```{r}
+
+```
+
+## Q6
+
+3. superspreading event? compare the population r0 and the individual r0, dispersion parameter
+
+> epicontacts
+> bpmodels
+
+> https://community.appliedepi.org/t/estimating-the-degree-of-super-spreading-from-transmission-chain-data/103
+
+```{r}
+
+```
+
+## Q7
+
+2. In which scenarios the epidist object is useful? when to use a report summary statistic vs a dsitribution parameter
+
+> epiparameter
+
+```{r}
+
+```
+
+## Q8
+
+3. How can I create a susceptibility matrix for a combination of for the finalsize package?
+
+> https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
+
+```{r}
+
+```
+
+## Q9
+
+2. What steps can I follow to create a reproducible report to quantify the time varying transmission during a real-time outbreak evaluation?
+
+> episoap
+
+```{r}
+
+```
+
