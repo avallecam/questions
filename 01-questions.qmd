@@ -66,6 +66,10 @@ growth_rate(out)
 - Finally, we calculate the growth rate by taking the difference between consecutive weekly cases, dividing it by the lagged weekly cases, and multiplying by 100 to express it as a percentage.
 - The growth rate data is stored in the growth_rate data frame, and we print it using the print() function.
 
+### Reference
+
+- https://www.reconverse.org/i2extras/articles/fitting_epicurves.html
+
 ## Q2
 
 Question: How to generate the effective reproductive number from the growth rate?
