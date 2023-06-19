@@ -21,9 +21,11 @@ NOT USED: Your can use packages from the tidyverse to manage data object.
 Question: How to calculate the weekly growth rate of an outbreak? 
 
 Conditions: 
-- Use the linelist from the Simulated Ebola outbreak ebola_sim_clean object from the outbreaks R package. 
+- Use the first list element from the Simulated Ebola outbreak ebola_sim_clean object from the outbreaks R package. 
 - Use the "date of onset" column to calculate the weekly growth rate. 
 - Keep the first 20 weeks of the period of the analysis.
+
+### A1
 
 ```{r}
 # Load required packages
@@ -31,40 +33,43 @@ library(outbreaks)
 library(i2extras)
 library(dplyr)
 
-# Load the simulated Ebola outbreak data linelist
-raw_dat <- ebola_sim_clean$linelist
+# Load the simulated Ebola outbreak data
+data(ebola_sim_clean)
+
+# Extract the first element of the list
+linelist <- ebola_sim_clean[[1]]
 
 # Convert the data to an incidence object
 dat <- incidence(
-  x = raw_dat, 
+  x = linelist, 
   date_index = "date_of_onset",
   interval = "week"
 )
 
 # Filter the dataset to keep the first 20 weeks. 
-dat_period <- dat[1:20,]
+dat_filter <- dat[1:20,]
 
 # Model the incidence
-out <- fit_curve(dat_period, model = "poisson", alpha = 0.05)
+out <- fit_curve(dat_filter, model = "poisson", alpha = 0.05)
 
 # Print the result
 growth_rate(out)
+
+# Plot the result
+plot(out)
 ```
 
-### Explanation
-
-- for a weekly rate use a week interval
-- An incidence2 object provides observations in descendant order with respect to time 
-- using the "date of onset" column
-- interval by week
-
-- We begin by loading the required packages, "outbreaks" and "tidyverse", using the library() function.
-- Next, we load the simulated Ebola outbreak data using the data() function from the "outbreaks" package.
-- We filter the data to keep the first 20 weeks of the outbreak using the %>% pipe operator and the filter() function from the "dplyr" package.
-- To calculate the weekly growth rate, we group the data by the floor date of the onset date using the group_by() function.
-- We then use the summarize() function to calculate the number of cases per week.
-- Finally, we calculate the growth rate by taking the difference between consecutive weekly cases, dividing it by the lagged weekly cases, and multiplying by 100 to express it as a percentage.
-- The growth rate data is stored in the growth_rate data frame, and we print it using the print() function.
+- The `outbreaks` package is loaded to access the simulated Ebola outbreak data.
+- The `ebola_sim_clean` object from the package contains the simulated outbreak data.
+- The `linelist` object contains the first list element from `ebola_sim_clean`.
+- The `incidence()` function converts the data object `linelist` to an `incidence2` class object.
+- The `date_of_onset` column is used in the `date_index` argument as the onset dates of the outbreak.
+- The `"week"` text string is used to count number of cases per week interval to calculate the weekly growth rate.  
+- The `incidence2` object provides observations arranged in descendant order with respect to the `date_index`.
+- The number of weeks to consider is set to 20 and stored in the `dat_filter` object.
+- The `fit_curve()` function fits a Poisson linear regression model to the epicurve in the `dat_filter` object with an alpha value of `0.05` to calculate the 95% confidence intervals.
+- The `growth_rate()` function calculate the weekly growth/decay rate.
+- The `plot()` function plot the fitted epicurve.
 
 ### Reference
 
