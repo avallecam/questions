@@ -16,7 +16,7 @@ You are R software teacher specialising in outbreak analytics and epidemic model
 NOT USED: Your can use packages from the tidyverse to manage data object.
 ```
 
-## Q1
+## Q1: growth rate
 
 Question: How to calculate the weekly growth rate of an outbreak? 
 
@@ -74,6 +74,128 @@ plot(out)
 ### Reference
 
 - https://www.reconverse.org/i2extras/articles/fitting_epicurves.html
+
+## Q2: susceptibility matrices
+
+Question: How to create the susceptibility matrices for a scenario where the susceptibility varies between and within groups to use with the finalsize package?
+
+This scenario assumes that, in the population, there is different susceptibility to the infection:
+
+- between individuals of different age groups from 20% (infants) to 100% (65+), and
+- within individuals of the same age group due the immunization effect of 25% to the 40% of each of the age groups.
+
+Additionally, 10% of individuals in each of the age groups have 100% susceptibility, due to no immunization or not exposed to similar pathogens previously.
+
+```{r}
+demography_groups <- c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+")
+immunization_effect <- 0.25
+
+# susceptibility matrix
+susceptibility <- tibble(
+  age_group = demography_groups,
+  susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0),
+  unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)
+) %>%
+  mutate(immunised = unimmunised * (1 - immunization_effect)) %>%
+  column_to_rownames(var = "age_group") %>%
+  as.matrix()
+
+susceptibility
+
+# demography-in-susceptibility matrix
+p_susceptibility <- tibble(
+  age_group = demography_groups,
+  susceptible = c(0.1, 0.1, 0.1, 0.1, 0.1),
+  immunised = c(0.4, 0.4, 0.4, 0.4, 0.4)
+) %>%
+  mutate(unimmunised = 1 - immunised - susceptible) %>%
+  column_to_rownames(var = "age_group") %>%
+  as.matrix()
+
+p_susceptibility
+```
+
+### Reference
+
+- https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
+
+## Q3: final size of an epidemic 
+
+Question: How to calculate the final size of an epidemic accounting for heterogeneous social contact and homogeneous susceptibility in all age groups?
+
+Conditions:
+
+```{r}
+library(finalsize)
+library(socialmixr)
+library(tidyverse)
+
+# get UK polymod data
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 5, 18, 40, 65),
+  symmetric = TRUE
+)
+
+# get the contact matrix and demography data
+contact_matrix <- t(contact_data$matrix)
+
+# scale the contact matrix so the largest eigenvalue is 1.0
+# this is to ensure that the overall epidemic dynamics correctly reflect
+# the assumed value of R0
+contact_matrix_scaled <- contact_matrix / max(Re(eigen(contact_matrix)$values))
+
+# Define population in each age group
+demography_vector <- contact_data$demography$population
+demography_groups <- contact_data$demography$age.group
+
+# divide each row of the contact matrix by the corresponding demography
+# this reflects the assumption that each individual in group {j} make contacts
+# at random with individuals in group {i}
+contact_matrix_random <- contact_matrix_scaled / demography_vector
+
+# Define susceptibility of each group
+# susceptibility matrix
+susceptibility <- tibble(
+  age_group = demography_groups,
+  susceptible = c(0.8, 0.8, 0.8, 0.8, 0.8)
+) %>%
+  column_to_rownames(var = "age_group") %>%
+  as.matrix()
+
+susceptibility
+
+# Assume uniform susceptibility within age groups
+# demography-in-susceptibility matrix
+p_susceptibility <- tibble(
+  age_group = demography_groups,
+  susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)
+) %>%
+  column_to_rownames(var = "age_group") %>%
+  as.matrix()
+
+p_susceptibility
+
+# R0 of the disease
+r0 <- 1.5 # assumed for pandemic influenza
+
+# Calculate the proportion of individuals infected in each age group
+final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix_random,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+```
+
+### Reference
+
+- https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
+- https://epiverse-trace.github.io/finalsize/articles/varying_contacts.html
+
 
 ## Q2
 
@@ -154,6 +276,14 @@ what are the hospital bed requirements for next weeks?
 
 ## Q7
 
+Question: How to extract a epiparamenter
+
+How to convert from statistic to distrubution
+
+How to convert from distribution to statistic
+
+## Q7
+
 2. In which scenarios the epidist object is useful? when to use a report summary statistic vs a dsitribution parameter
 
 > epiparameter
@@ -162,15 +292,6 @@ what are the hospital bed requirements for next weeks?
 
 ```
 
-## Q8
-
-3. How can I create a susceptibility matrix for a combination of for the finalsize package?
-
-> https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
-
-```{r}
-
-```
 
 ## Q9
 
@@ -182,3 +303,16 @@ what are the hospital bed requirements for next weeks?
 
 ```
 
+## Q2
+
+Question: How to calculate a delay-corrected case fatality ratio?
+
+```{r}
+
+```
+
+## draft
+
+1. Can you get the linelist and contact data from the outbreaks?
+2. Can you use the covid regional data from the covidregional package?
+3. Pick data before the peak of cases?
