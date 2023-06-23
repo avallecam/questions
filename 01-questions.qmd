@@ -39,8 +39,8 @@ data(ebola_sim_clean)
 # Extract the first element of the list
 linelist <- ebola_sim_clean[[1]]
 
-# Convert the data to an incidence object
-dat <- incidence(
+# Convert the data to an incidence2 object
+dat <- incidence2::incidence(
   x = linelist, 
   date_index = "date_of_onset",
   interval = "week"
@@ -62,7 +62,7 @@ plot(out)
 - The `outbreaks` package is loaded to access the simulated Ebola outbreak data.
 - The `ebola_sim_clean` object from the package contains the simulated outbreak data.
 - The `linelist` object contains the first list element from `ebola_sim_clean`.
-- The `incidence()` function converts the data object `linelist` to an `incidence2` class object.
+- The `incidence2::incidence()` function converts the data object `linelist` to an `incidence2` class object.
 - The `date_of_onset` column is used in the `date_index` argument as the onset dates of the outbreak.
 - The `"week"` text string is used to count number of cases per week interval to calculate the weekly growth rate.  
 - The `incidence2` object provides observations arranged in descendant order with respect to the `date_index`.
@@ -75,16 +75,211 @@ plot(out)
 
 - https://www.reconverse.org/i2extras/articles/fitting_epicurves.html
 
-## Q2: susceptibility matrices
+## Q2: epidemiological parameters
+
+Question: How to extract the serial interval distribution parameters of Ebola Virus Disease estimated from the WHO Ebola Response Team in 2015?
+
+### A2
+
+```{r}
+library(epiparameter)
+library(tidyverse)
+
+epiparam <- epiparam()
+
+epiparam_ebola <- epiparam %>% 
+  filter(str_detect(disease,"Ebola")) %>% 
+  filter(epi_distribution == "serial_interval") %>% 
+  filter(region == "West Africa") %>% 
+  filter(year == 2015)
+
+epiparam_ebola
+
+epidist_ebola <- as_epidist(epiparam_ebola)
+
+epidist_ebola
+
+plot(epidist_ebola,day_range = 0:50)
+```
+
+### Reference
+
+## Q3: reproduction number
+
+Questions: How to quantify the time-varying reproduction number (Rt) of the outbreak with the mean and standard deviation of the serial interval distribution?
+
+### A3
+
+```{r}
+# Load required packages
+library(outbreaks)
+library(incidence)
+library(EpiEstim)
+library(epiparameter)
+library(tidyverse)
+
+# Load the simulated Ebola outbreak data
+data(ebola_sim_clean)
+
+# Extract the first element of the list
+linelist <- ebola_sim_clean$linelist
+
+linelist %>% as_tibble()
+
+# Convert the data to an incidence object
+dat <- incidence::incidence(linelist$date_of_onset)
+
+epiparam <- epiparam()
+
+epiparam_ebola <- epiparam %>% 
+  filter(str_detect(disease,"Ebola")) %>% 
+  filter(epi_distribution == "serial_interval") %>% 
+  filter(region == "West Africa")
+
+epiparam_ebola
+
+# Estimate R
+out <- estimate_R(incid = dat, 
+                  method="parametric_si",
+                  config=make_config(mean_si = epiparam_ebola$mean,
+                                     std_si = epiparam_ebola$sd))
+
+plot(out)
+```
+
+## Q4 forecast
+
+1. How to forecast the future trajectory of the outbreak?
+
+### A4
+
+```{r}
+# Load required packages
+library(outbreaks)
+library(i2extras)
+library(epiparameter)
+library(tidyverse)
+library(projections)
+
+# Load the simulated Ebola outbreak data
+data(ebola_sim_clean)
+
+# Extract the first element of the list
+linelist <- ebola_sim_clean$linelist
+
+# Convert the data to an incidence2 object
+dat2 <- incidence2::incidence(
+  x = linelist, 
+  date_index = "date_of_onset",
+  interval = "day"
+)
+
+# Filter the dataset to keep the first 20 weeks. 
+dat2_filter <- dat2[1:48,]
+
+# Convert the filtered data to an incidence object
+dat2_filter_uncount <- dat2_filter %>% uncount(count)
+dat1_filter <- incidence::incidence(dat2_filter_uncount$date_index)
+
+plot(dat1_filter)
+
+# Model the incidence
+out <- fit_curve(x = dat2_filter,
+                 model = "poisson",
+                 alpha = 0.05)
+
+plot(out)
+
+epiparam <- epiparam()
+
+epiparam_ebola_si <- epiparam %>% 
+  filter(str_detect(disease,"Ebola")) %>% 
+  filter(epi_distribution == "serial_interval") %>% 
+  filter(region == "West Africa")
+
+epiparam_ebola_si
+
+epidist_ebola_si <- as_epidist(epiparam_ebola_si)
+
+epidist_ebola_si
+
+discrete_ebola_si <- discretise(epidist_ebola_si)
+
+discrete_ebola_si
+
+reproductive_basic <- 
+  epitrix::lm2R0_sample(
+    x = out %>% pull(model) %>% pluck(1),
+    w = discrete_ebola_si$prob_dist,
+    n = 500
+  )
+
+sample_function <- 
+  function(x = reproductive_basic, n_sim = 1000){
+    mu <- mean(x)
+    sigma <- sd(x)
+    shape_scale <- epitrix::gamma_mucv2shapescale(
+      mu = mu, 
+      cv = sigma / mu
+    )
+    sample_result <- rgamma(
+      n = n_sim, 
+      shape = shape_scale$shape, 
+      scale = shape_scale$scale
+    )
+    return(sample_result)
+  }
+
+reproductive_basic_sample <- 
+  sample_function(
+    x = reproductive_basic,
+    n_sim = 1000
+  )
+
+hist(reproductive_basic_sample)
+
+distcrete_ebola_si <- 
+  distcrete::distcrete(
+    name = "gamma",
+    shape = discrete_ebola_si$prob_dist$parameters$shape,
+    scale = discrete_ebola_si$prob_dist$parameters$scale,
+    interval = discrete_ebola_si$prob_dist$interval,
+    w = discrete_ebola_si$prob_dist$w
+  )
+
+dat1_filter_projection <- 
+  project(
+    x = dat1_filter, 
+    R = reproductive_basic_sample, # now using a sample of R values
+    si = distcrete_ebola_si, 
+    n_sim = 1000, 
+    n_days = 14, # project over 2 weeks
+    R_fix_within = TRUE
+  )
+
+plot(dat1_filter) %>% 
+  add_projections(x = dat1_filter_projection,
+                  quantiles = c(0.025, 0.5, 0.975))
+```
+
+### Reference
+
+- https://epiverse-trace.github.io/epiparameter/articles/extract_convert.html
+- http://www.repidemicsconsortium.org/epitrix/reference/r2R0.html
+- http://www.repidemicsconsortium.org/epitrix/reference/gamma_tools.html
+- https://www.reconlearn.org/solutions/real-time-response-2.html
+
+## Q5: susceptibility matrices
 
 Question: How to create the susceptibility matrices for a scenario where the susceptibility varies between and within groups to use with the finalsize package?
 
-This scenario assumes that, in the population, there is different susceptibility to the infection:
+Conditions:
+- This scenario assumes that, in the population, there is different susceptibility to the infection:
+    - between individuals of different age groups from 20% (infants) to 100% (65+), and
+    - within individuals of the same age group due the immunization effect of 25% to the 40% of each of the age groups.
+- Additionally, 10% of individuals in each of the age groups have 100% susceptibility, due to no immunization or not exposed to similar pathogens previously.
 
-- between individuals of different age groups from 20% (infants) to 100% (65+), and
-- within individuals of the same age group due the immunization effect of 25% to the 40% of each of the age groups.
-
-Additionally, 10% of individuals in each of the age groups have 100% susceptibility, due to no immunization or not exposed to similar pathogens previously.
+### A5
 
 ```{r}
 demography_groups <- c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+")
@@ -119,11 +314,13 @@ p_susceptibility
 
 - https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
 
-## Q3: final size of an epidemic 
+## Q6: final size of an epidemic 
 
 Question: How to calculate the final size of an epidemic accounting for heterogeneous social contact and homogeneous susceptibility in all age groups?
 
 Conditions:
+
+### A6
 
 ```{r}
 library(finalsize)
@@ -195,124 +392,3 @@ final_size(
 
 - https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
 - https://epiverse-trace.github.io/finalsize/articles/varying_contacts.html
-
-
-## Q2
-
-Question: How to generate the effective reproductive number from the growth rate?
-
-1. Is there a relationship between the growth rate and rt?
-
-> i2extras and epitrix
-
-```{r}
-
-```
-
-## Q3
-
-2. How to know if an epidemic is under control? 
-
-> epiestim
-
-need to implement complementary intervention measures?
-
-Can you estimate the time-varying reproduction number (Rt) of the outbreak?
-
-```{r}
-library(EpiEstim)
-
-# Import data
-data <- read.csv("outbreak_data.csv")
-
-# Format data
-data$date <- as.Date(data$date)
-cases <- ts(data$cases, start = 1, frequency = 7)
-
-# Estimate R
-epiestim <- estimate_R(cases, method="parametric_si",
-                   	config=list(mean_si = 5, std_si = 1),
-                   	min.cases=10, maxLikelihood = FALSE)
-
-```
-
-## Q4
-
-2. how can I took into account the reporting delays for the rt?
-
-> https://mrc-ide.github.io/EpiEstim/articles/alternative_software.html
-
-```{r}
-
-```
-
-## Q5
-
-1. Can you develop a predictive model to forecast the future trajectory of the outbreak?
-
-> projections
-> bpmodels
-
-how is the outbreak likely to develop over the next weeks?
-what are the forecasted number of cases over next weeks?
-what are the hospital bed requirements for next weeks?
-
-```{r}
-
-```
-
-## Q6
-
-3. superspreading event? compare the population r0 and the individual r0, dispersion parameter
-
-> epicontacts
-> bpmodels
-
-> https://community.appliedepi.org/t/estimating-the-degree-of-super-spreading-from-transmission-chain-data/103
-
-```{r}
-
-```
-
-## Q7
-
-Question: How to extract a epiparamenter
-
-How to convert from statistic to distrubution
-
-How to convert from distribution to statistic
-
-## Q7
-
-2. In which scenarios the epidist object is useful? when to use a report summary statistic vs a dsitribution parameter
-
-> epiparameter
-
-```{r}
-
-```
-
-
-## Q9
-
-2. What steps can I follow to create a reproducible report to quantify the time varying transmission during a real-time outbreak evaluation?
-
-> episoap
-
-```{r}
-
-```
-
-## Q2
-
-Question: How to calculate a delay-corrected case fatality ratio?
-
-```{r}
-
-```
-
-## draft
-
-1. Can you get the linelist and contact data from the outbreaks?
-2. Can you use the covid regional data from the covidregional package?
-3. Pick data before the peak of cases?
