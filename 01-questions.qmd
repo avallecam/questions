@@ -28,6 +28,8 @@ Conditions:
 ### A1
 
 ```{r}
+# Calculate the weekly growth rate of an outbreak
+
 # Load required packages
 library(outbreaks)
 library(i2extras)
@@ -86,6 +88,8 @@ Question: How to extract the serial interval distribution parameters of Ebola Vi
 ### A2
 
 ```{r}
+# Extract the serial interval distribution parameters of Ebola Virus Disease estimated from the WHO Ebola Response Team in 2015
+
 # Load required packages
 library(epiparameter)
 
@@ -127,7 +131,7 @@ Conditions:
 ### A3
 
 ```{r}
-# quantify the time-varying reproduction number (Rt) of the outbreak
+# Quantify the time-varying reproduction number (Rt) of the outbreak
 
 # Load required packages
 library(outbreaks)
@@ -189,12 +193,16 @@ Additionally, make sure to adjust the serial interval distribution parameters ac
 ### A4
 
 ```{r}
+# Forecast the future trajectory of the outbreak
+
 # Load required packages
 library(outbreaks)
+library(incidence)
 library(i2extras)
 library(epiparameter)
-library(tidyverse)
+library(epitrix)
 library(projections)
+library(tidyverse)
 
 # Load the simulated Ebola outbreak data
 data(ebola_sim_clean)
@@ -203,27 +211,27 @@ data(ebola_sim_clean)
 linelist <- ebola_sim_clean$linelist
 
 # Convert the data to an incidence2 object
-dat2 <- incidence2::incidence(
+incidence2_data <- incidence2::incidence(
   x = linelist, 
   date_index = "date_of_onset",
   interval = "day"
 )
 
-# Filter the dataset to keep the first 20 weeks. 
-dat2_filter <- dat2[1:48,]
+# Filter the incidence2 object to keep the first 48 weeks. 
+incidence2_filter <- incidence2_data[1:48,]
 
-# Convert the filtered data to an incidence object
-dat2_filter_uncount <- dat2_filter %>% uncount(count)
-dat1_filter <- incidence::incidence(dat2_filter_uncount$date_index)
-
-plot(dat1_filter)
+# Convert the filtered incidence2 object to an incidence object
+incidence1_filter <- incidence2_filter %>% 
+  uncount(count) %>% 
+  pull(date_index) %>% 
+  incidence::incidence()
 
 # Model the incidence
-out <- fit_curve(x = dat2_filter,
-                 model = "poisson",
-                 alpha = 0.05)
-
-plot(out)
+incidence2_fit <- fit_curve(
+  x = incidence2_filter,
+  model = "poisson",
+  alpha = 0.05
+)
 
 # Extract parameter by disease, distribution, author
 epidist_ebola_si <- epidist_db(
@@ -232,39 +240,10 @@ epidist_ebola_si <- epidist_db(
   author = "WHO_Ebola_Response_Team"
 )
 
+# Discretise the continuous distribution
 discrete_ebola_si <- discretise(epidist_ebola_si)
 
-reproductive_basic <- 
-  epitrix::lm2R0_sample(
-    x = out %>% pull(model) %>% pluck(1),
-    w = discrete_ebola_si$prob_dist,
-    n = 500
-  )
-
-sample_function <- 
-  function(x = reproductive_basic, n_sim = 1000){
-    mu <- mean(x)
-    sigma <- sd(x)
-    shape_scale <- epitrix::gamma_mucv2shapescale(
-      mu = mu, 
-      cv = sigma / mu
-    )
-    sample_result <- rgamma(
-      n = n_sim, 
-      shape = shape_scale$shape, 
-      scale = shape_scale$scale
-    )
-    return(sample_result)
-  }
-
-reproductive_basic_sample <- 
-  sample_function(
-    x = reproductive_basic,
-    n_sim = 1000
-  )
-
-hist(reproductive_basic_sample)
-
+# Convert from epidist to distcrete class object
 distcrete_ebola_si <- 
   distcrete::distcrete(
     name = "gamma",
@@ -274,19 +253,31 @@ distcrete_ebola_si <-
     w = discrete_ebola_si$prob_dist$w
   )
 
-dat1_filter_projection <- 
-  project(
-    x = dat1_filter, 
-    R = reproductive_basic_sample,
+# Transform the growth rate into a reproductive number
+reproductive_basic <- 
+  epitrix::lm2R0_sample(
+    x = incidence2_fit %>% pull(model) %>% pluck(1),
+    w = discrete_ebola_si$prob_dist,
+    n = 500
+  )
+
+# Project the future incidence
+incidence1_projection <- 
+  projections::project(
+    x = incidence1_filter, 
+    R = reproductive_basic,
     si = distcrete_ebola_si, 
     n_sim = 1000, 
     n_days = 14, 
     R_fix_within = TRUE
   )
 
-plot(dat1_filter) %>% 
-  add_projections(x = dat1_filter_projection,
-                  quantiles = c(0.025, 0.5, 0.975))
+# Plot projections object
+plot(incidence1_filter) %>% 
+  add_projections(
+    x = incidence1_projection,
+    quantiles = c(0.025, 0.5, 0.975)
+  )
 ```
 
 - Project over two weeks
@@ -315,6 +306,8 @@ Conditions:
 ### A5
 
 ```{r}
+# Create the susceptibility matrices for variability between and within groups
+
 library(tidyverse)
 
 demography_groups <- c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+")
@@ -366,6 +359,8 @@ Conditions:
 ### A6
 
 ```{r}
+# Calculate the final size of an epidemic
+
 library(finalsize)
 library(socialmixr)
 library(tidyverse)
