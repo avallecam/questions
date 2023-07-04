@@ -183,6 +183,11 @@ Please note that the code assumes the necessary packages are already installed. 
 
 Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
 
+### Reference
+
+- https://epiverse-trace.github.io/epiparameter/articles/epiparameter.html
+- https://mrc-ide.github.io/EpiEstim/articles/full_EpiEstim_vignette.html
+
 ## Q4 projection
 
 Questions: How to project the future trajectory of the outbreak?

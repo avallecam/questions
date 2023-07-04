@@ -1,0 +1,76 @@
+---
+title: "Q&As"
+format: html
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction
+
+```
+You are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.
+```
+
+```
+NOT USED: Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %>% operator.
+```
+
+## Q5: susceptibility matrices
+
+Question: How to create the two heterogeneous susceptibility matrices to estimate the final size of an epidemic with the `finalsize` package?
+
+Conditions:
+- The population is divided in five age groups: 0 – 4, 5 – 17, 18 – 39, 40 – 64, and 65 and over.
+- The susceptibility between age groups differs in the following way:
+    - 20% in age group 0 – 4, 
+    - 50% in age group 5 – 17,
+    - 60% in age group 18 – 39,
+    - 90% in age group 40 – 64,
+    - 100% in age group of 65 and over,
+- An immunization campaign generated within-age group variation in susceptibility.
+- The immunization effect in all age groups is 25%.
+- The known proportion of the immunized population in all age groups is 40%.
+
+### A5
+
+```{r}
+# Create the susceptibility matrices for variability between and within groups
+
+# Load required packages
+library(tidyverse)
+
+# Define the immunization effect
+immunization_effect <- 0.25
+
+# susceptibility matrix
+susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  unimmunised = c(0.2, 0.5, 0.6, 0.9, 1.0)
+) %>%
+  mutate(immunised = unimmunised * (1 - immunization_effect)) %>%
+  column_to_rownames(var = "age_group") %>%
+  as.matrix()
+
+susceptibility
+
+# demography-in-susceptibility matrix
+p_susceptibility <- tibble(
+  age_group = c("[0,5)", "[5,18)", "[18,40)", "[40,65)", "65+"),
+  unimmunised = c(0.6, 0.6, 0.6, 0.6, 0.6)
+) %>%
+  mutate(immunised = 1 - unimmunised) %>%
+  column_to_rownames(var = "age_group") %>%
+  as.matrix()
+
+p_susceptibility
+```
+
+Please note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the `install.packages("pak")` function and then the `pak::pak()` function for both packages in CRAN or GitHub before loading them with `library()`. 
+
+Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
+
+### Reference
+
+- https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
+

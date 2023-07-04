@@ -1,0 +1,103 @@
+---
+title: "Q&As"
+format: html
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction
+
+```
+You are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.
+```
+
+```
+NOT USED: Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %>% operator.
+```
+
+## Q6: final size of an epidemic 
+
+Question: How to calculate the final size of an epidemic accounting for heterogeneous social contact and homogeneous susceptibility in all age groups?
+
+Conditions:
+- 
+
+### A6
+
+```{r}
+# Calculate the final size of an epidemic
+
+library(finalsize)
+library(socialmixr)
+library(tidyverse)
+
+# get UK polymod data
+polymod <- socialmixr::polymod
+contact_data <- socialmixr::contact_matrix(
+  polymod,
+  countries = "United Kingdom",
+  age.limits = c(0, 5, 18, 40, 65),
+  symmetric = TRUE
+)
+
+# get the contact matrix and demography data
+contact_matrix <- t(contact_data$matrix)
+
+# scale the contact matrix so the largest eigenvalue is 1.0
+# this is to ensure that the overall epidemic dynamics correctly reflect
+# the assumed value of R0
+contact_matrix_scaled <- contact_matrix / max(Re(eigen(contact_matrix)$values))
+
+# Define population in each age group
+demography_vector <- contact_data$demography$population
+demography_groups <- contact_data$demography$age.group
+
+# divide each row of the contact matrix by the corresponding demography
+# this reflects the assumption that each individual in group {j} make contacts
+# at random with individuals in group {i}
+contact_matrix_random <- contact_matrix_scaled / demography_vector
+
+# Define susceptibility of each group
+# susceptibility matrix
+susceptibility <- tibble(
+  age_group = demography_groups,
+  susceptible = c(0.8, 0.8, 0.8, 0.8, 0.8)
+) %>%
+  column_to_rownames(var = "age_group") %>%
+  as.matrix()
+
+susceptibility
+
+# Assume uniform susceptibility within age groups
+# demography-in-susceptibility matrix
+p_susceptibility <- tibble(
+  age_group = demography_groups,
+  susceptible = c(1.0, 1.0, 1.0, 1.0, 1.0)
+) %>%
+  column_to_rownames(var = "age_group") %>%
+  as.matrix()
+
+p_susceptibility
+
+# R0 of the disease
+r0 <- 1.5 # assumed for pandemic influenza
+
+# Calculate the proportion of individuals infected in each age group
+final_size(
+  r0 = r0,
+  contact_matrix = contact_matrix_random,
+  demography_vector = demography_vector,
+  susceptibility = susceptibility,
+  p_susceptibility = p_susceptibility
+)
+```
+
+Please note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the `install.packages("pak")` function and then the `pak::pak()` function for both packages in CRAN or GitHub before loading them with `library()`. 
+
+Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
+
+### Reference
+
+- https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
+- https://epiverse-trace.github.io/finalsize/articles/varying_contacts.html

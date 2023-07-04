@@ -1,0 +1,128 @@
+---
+title: "Q&As"
+format: html
+editor: source
+editor_options: 
+  chunk_output_type: console
+---
+
+## Introduction
+
+```
+You are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.
+```
+
+```
+NOT USED: Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %>% operator.
+```
+
+## Q4 projection
+
+Questions: How to project the future trajectory of the outbreak?
+
+Conditions:
+- 
+
+### A4
+
+```{r}
+# Forecast the future trajectory of the outbreak
+
+# Load required packages
+library(outbreaks)
+library(incidence)
+library(i2extras)
+library(epiparameter)
+library(epitrix)
+library(projections)
+library(tidyverse)
+
+# Load the simulated Ebola outbreak data
+data(ebola_sim_clean)
+
+# Extract the first element of the list
+linelist <- ebola_sim_clean$linelist
+
+# Convert the data to an incidence2 object
+incidence2_data <- incidence2::incidence(
+  x = linelist, 
+  date_index = "date_of_onset",
+  interval = "day"
+)
+
+# Filter the incidence2 object to keep the first 48 weeks. 
+incidence2_filter <- incidence2_data[1:48,]
+
+# Convert the filtered incidence2 object to an incidence object
+incidence1_filter <- incidence2_filter %>% 
+  uncount(count) %>% 
+  pull(date_index) %>% 
+  incidence::incidence()
+
+# Model the incidence
+incidence2_fit <- fit_curve(
+  x = incidence2_filter,
+  model = "poisson",
+  alpha = 0.05
+)
+
+# Extract parameter by disease, distribution, author
+epidist_ebola_si <- epidist_db(
+  disease = "Ebola",
+  epi_dist = "serial_interval",
+  author = "WHO_Ebola_Response_Team"
+)
+
+# Discretise the continuous distribution
+discrete_ebola_si <- discretise(epidist_ebola_si)
+
+# Convert from epidist to distcrete class object
+distcrete_ebola_si <- 
+  distcrete::distcrete(
+    name = "gamma",
+    shape = discrete_ebola_si$prob_dist$parameters$shape,
+    scale = discrete_ebola_si$prob_dist$parameters$scale,
+    interval = discrete_ebola_si$prob_dist$interval,
+    w = discrete_ebola_si$prob_dist$w
+  )
+
+# Transform the growth rate into a reproductive number
+reproductive_basic <- 
+  epitrix::lm2R0_sample(
+    x = incidence2_fit %>% pull(model) %>% pluck(1),
+    w = discrete_ebola_si$prob_dist,
+    n = 500
+  )
+
+# Project the future incidence
+incidence1_projection <- 
+  projections::project(
+    x = incidence1_filter, 
+    R = reproductive_basic,
+    si = distcrete_ebola_si, 
+    n_sim = 1000, 
+    n_days = 14, 
+    R_fix_within = TRUE
+  )
+
+# Plot projections object
+plot(incidence1_filter) %>% 
+  add_projections(
+    x = incidence1_projection,
+    quantiles = c(0.025, 0.5, 0.975)
+  )
+```
+
+- Project over two weeks
+
+Please note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the `install.packages("pak")` function and then the `pak::pak()` function for both packages in CRAN or GitHub before loading them with `library()`. 
+
+Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
+
+### Reference
+
+- https://epiverse-trace.github.io/epiparameter/articles/extract_convert.html
+- http://www.repidemicsconsortium.org/epitrix/reference/r2R0.html
+- http://www.repidemicsconsortium.org/epitrix/reference/gamma_tools.html
+- https://www.reconlearn.org/solutions/real-time-response-2.html
+

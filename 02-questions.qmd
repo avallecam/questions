@@ -1,0 +1,103 @@
+## QX
+
+replace projections with bpmodels
+
+- https://epiverse-trace.github.io/superspreading/articles/superspreading.html
+- https://epiverse-trace.github.io/bpmodels/articles/projecting_incidence.html
+
+```{r}
+epiparam <- epiparam()
+
+epiparam_ebola_k <- epiparam %>% 
+  filter(str_detect(disease,"Ebola")) %>% 
+  filter(epi_distribution == "offspring_distribution")
+
+epiparam_ebola_k$mean
+```
+
+
+## Q6
+
+Question: How to generate the effective reproductive number from the growth rate?
+
+1. Is there a relationship between the growth rate and rt?
+
+> i2extras and epitrix
+
+```{r}
+
+```
+
+
+
+## Q4
+
+2. how can I took into account the reporting delays for the rt?
+  
+  > https://mrc-ide.github.io/EpiEstim/articles/alternative_software.html
+
+```{r}
+
+```
+
+
+## Q6
+
+3. superspreading event? compare the population r0 and the individual r0, dispersion parameter
+
+> epicontacts
+> bpmodels
+
+> https://community.appliedepi.org/t/estimating-the-degree-of-super-spreading-from-transmission-chain-data/103
+
+```{r}
+
+```
+
+
+## Q7
+
+2. In which scenarios the epidist object is useful? when to use a report summary statistic vs a dsitribution parameter
+
+> epiparameter
+
+```{r}
+
+```
+
+
+## Q9
+
+2. What steps can I follow to create a reproducible report to quantify the time varying transmission during a real-time outbreak evaluation?
+  
+  > episoap
+
+```{r}
+
+```
+
+## Q2
+
+Question: How to calculate a delay-corrected case fatality ratio?
+
+```{r}
+
+```
+
+## draft
+
+1. Can you get the linelist and contact data from the outbreaks?
+2. Can you use the covid regional data from the covidregional package?
+3. Pick data before the peak of cases?
+
+How to convert an epidemiological parameter from statistic to distribution?
+
+How to convert an epidemiological parameter from distribution to statistic?
+
+- using a parametrized parametric si
+- using a discrete non parametric si --> si_distr
+- uncertain si
+
+how is the outbreak likely to develop over the next weeks?
+what are the forecasted number of cases over next weeks?
+what are the hospital bed requirements for next weeks?
