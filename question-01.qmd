@@ -1,31 +1,35 @@
 ---
-title: "Q&As"
+title: "How to calculate the weekly growth rate of an outbreak?"
 format: html
 editor: source
 editor_options: 
   chunk_output_type: console
 ---
 
-## Introduction
+## Topic
+
+growth rate
+
+## Introductory prompt
 
 ```
 You are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.
 ```
 
 ```
-NOT USED: Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %>% operator.
+Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %>% operator.
 ```
 
-## Q1: growth rate
+## Question 
 
-Question: How to calculate the weekly growth rate of an outbreak? 
+How to calculate the weekly growth rate of an outbreak? 
 
 Conditions: 
 - Use the first list element from the Simulated Ebola outbreak ebola_sim_clean object from the outbreaks R package. The name of the first element is linelist.
 - Use the "date of onset" column to calculate the weekly growth rate. 
 - Keep the first 20 weeks of the period of the analysis.
 
-### A1
+### Answer
 
 ```{r}
 # Calculate the weekly growth rate of an outbreak
@@ -80,4 +84,3 @@ Additionally, make sure to adjust the serial interval distribution parameters ac
 ### Reference
 
 - https://www.reconverse.org/i2extras/articles/fitting_epicurves.html
-

@@ -1,12 +1,16 @@
 ---
-title: "Q&As"
+title: "How to project the future trajectory of the outbreak?"
 format: html
 editor: source
 editor_options: 
   chunk_output_type: console
 ---
 
-## Introduction
+## Topic
+
+projection
+
+## Introductory prompt
 
 ```
 You are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.
@@ -16,9 +20,9 @@ You are R software teacher specialising in outbreak analytics and epidemic model
 NOT USED: Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %>% operator.
 ```
 
-## Q4 projection
+## Question 
 
-Questions: How to project the future trajectory of the outbreak?
+How to project the future trajectory of the outbreak?
 
 Conditions:
 - 
