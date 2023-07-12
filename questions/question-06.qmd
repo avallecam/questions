@@ -22,7 +22,7 @@ You are R software teacher specialising in outbreak analytics and epidemic model
 ```
 
 ```
-NOT USED: Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %>% operator.
+Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %>% operator.
 ```
 
 ## Question
