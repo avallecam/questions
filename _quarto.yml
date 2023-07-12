@@ -1,0 +1,30 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - "*.qmd"
+    - "!internal/"
+
+website:
+  title: "questions"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+    tools:
+      - icon: github
+        menu:
+          - text: Source Code
+            url:  https://github.com/epiverse-trace/questions
+          - text: Report a Bug
+            url:  https://github.com/epiverse-trace/questions/issues
+  repo-url: https://github.com/epiverse-trace/questions/
+  repo-actions: [edit, issue]
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+

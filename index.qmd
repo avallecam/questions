@@ -1,0 +1,21 @@
+---
+title: "Get started"
+fig-cap-location: top
+listing: 
+  - id: question-order
+    contents: "questions/*.qmd"
+    type: table
+    fields: [title]
+---
+
+The goal of the `questions` repository is to collect a set of Q&A of Outbreak data analysis tasks using `R` packages to train a large language model as a chatbox service.
+
+## Q&A's
+
+:::{#question-order}
+:::
+
+
+## More
+
+Refer to the [About](about.qmd) page for more details about the rationale behind the design of this site.
