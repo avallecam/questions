@@ -29,7 +29,7 @@ Use tidyverse packages as much as you can to: select columns, filter rows, mutat
 
 How to extract the serial interval distribution parameters of Ebola Virus Disease estimated from the WHO Ebola Response Team in 2015?
 
-### Answer
+## Answer
 
 ```{r}
 #| warning: false
@@ -61,6 +61,6 @@ Please note that the code assumes the necessary packages are already installed. 
 
 Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
 
-### Reference
+## Reference
 
 - https://epiverse-trace.github.io/epiparameter/articles/epiparameter.html

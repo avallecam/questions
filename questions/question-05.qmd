@@ -30,6 +30,7 @@ Use tidyverse packages as much as you can to: select columns, filter rows, mutat
 How to include heterogeneous susceptibility in a population to simulate the final size of an epidemic?
 
 Conditions:
+
 - Create the two susceptibility matrices needed for the `finalsize` package.
 - The population is divided into five age groups: 0 – 4, 5 – 17, 18 – 39, 40 – 64, and 65 and over.
 - An immunization campaign generated within age group variation in susceptibility.
@@ -42,7 +43,7 @@ Conditions:
     - 100% in age group of 65 and over,
 - The percentage of the unimmunized population in all age groups is 60%.
 
-### Answer
+## Answer
 
 ```{r}
 #| warning: false
@@ -104,7 +105,7 @@ Please note that the code assumes the necessary packages are already installed. 
 
 Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
 
-### Reference
+## Reference
 
 - https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
 

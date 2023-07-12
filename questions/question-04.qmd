@@ -30,9 +30,10 @@ NOT USED: Use tidyverse packages as much as you can to: select columns, filter r
 How to project the future trajectory of the outbreak?
 
 Conditions:
+
 - (pending)
 
-### Answer
+## Answer
 
 ```{r}
 #| warning: false
@@ -132,7 +133,7 @@ Please note that the code assumes the necessary packages are already installed. 
 
 Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
 
-### Reference
+## Reference
 
 - https://epiverse-trace.github.io/epiparameter/articles/extract_convert.html
 - http://www.repidemicsconsortium.org/epitrix/reference/r2R0.html

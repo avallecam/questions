@@ -30,6 +30,7 @@ NOT USED: Use tidyverse packages as much as you can to: select columns, filter r
 How to calculate the final size of an epidemic accounting for heterogeneous social contact and homogeneous susceptibility in all age groups?
 
 Conditions:
+
 - (pending)
 
 ### Answer

@@ -30,11 +30,12 @@ Use tidyverse packages as much as you can to: select columns, filter rows, mutat
 How to calculate the weekly growth rate of an outbreak? 
 
 Conditions: 
+
 - Use the first list element from the Simulated Ebola outbreak ebola_sim_clean object from the outbreaks R package. The name of the first element is linelist.
 - Use the "date of onset" column to calculate the weekly growth rate. 
 - Keep the first 20 weeks of the period of the analysis.
 
-### Answer
+## Answer
 
 ```{r}
 #| warning: false
@@ -89,6 +90,6 @@ Please note that the code assumes the necessary packages are already installed. 
 
 Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
 
-### Reference
+## Reference
 
 - https://www.reconverse.org/i2extras/articles/fitting_epicurves.html

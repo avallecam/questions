@@ -30,12 +30,13 @@ Use tidyverse packages as much as you can to: select columns, filter rows, mutat
 How to quantify the time-varying reproduction number (Rt) of the outbreak?
 
 Conditions:
+
 - Use the first list element from the Simulated Ebola outbreak ebola_sim_clean object from the outbreaks R package. The name of the first element is linelist.
 - Use the "date of onset" column to calculate the weekly growth rate. 
 - Use the serial interval distribution parameters of Ebola Virus Disease estimated from the WHO Ebola Response Team in 2015 to quantify the time-varying reproduction number.
 - Assume a known mean and standard deviation values of the serial interval distribution to quantify the time-varying reproduction number.
 
-### Answer
+## Answer
 
 ```{r}
 #| warning: false
@@ -93,7 +94,7 @@ Please note that the code assumes the necessary packages are already installed. 
 
 Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
 
-### Reference
+## Reference
 
 - https://epiverse-trace.github.io/epiparameter/articles/epiparameter.html
 - https://mrc-ide.github.io/EpiEstim/articles/full_EpiEstim_vignette.html
