@@ -1,9 +1,14 @@
 ---
 title: "How to calculate the weekly growth rate of an outbreak?"
-format: html
+format: 
+  html:
+    code-link: true
 editor: source
 editor_options: 
   chunk_output_type: console
+date: last-modified
+toc: true
+toc_float: true
 ---
 
 ## Topic
@@ -32,6 +37,9 @@ Conditions:
 ### Answer
 
 ```{r}
+#| warning: false
+#| eval: false
+
 # Calculate the weekly growth rate of an outbreak
 
 # Load required packages

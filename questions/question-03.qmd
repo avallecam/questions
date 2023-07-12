@@ -1,9 +1,14 @@
 ---
-title: "How to quantify the time-varying reproduction number (Rt) of the outbreak?"
-format: html
+title: "How to quantify the time-varying reproduction number (Rt)?"
+format: 
+  html:
+    code-link: true
 editor: source
 editor_options: 
   chunk_output_type: console
+date: last-modified
+toc: true
+toc_float: true
 ---
 
 ## Topic
@@ -33,6 +38,9 @@ Conditions:
 ### Answer
 
 ```{r}
+#| warning: false
+#| eval: false
+
 # Quantify the time-varying reproduction number (Rt) of the outbreak
 
 # Load required packages

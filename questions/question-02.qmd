@@ -1,9 +1,14 @@
 ---
-title: "How to extract the serial interval distribution parameters of Ebola Virus Disease estimated from the WHO Ebola Response Team in 2015?"
-format: html
+title: "How to extract the serial interval distribution parameters of Ebola Virus Disease?"
+format: 
+  html:
+    code-link: true
 editor: source
 editor_options: 
   chunk_output_type: console
+date: last-modified
+toc: true
+toc_float: true
 ---
 
 ## Topic
@@ -27,6 +32,9 @@ How to extract the serial interval distribution parameters of Ebola Virus Diseas
 ### Answer
 
 ```{r}
+#| warning: false
+#| eval: false
+
 # Extract the serial interval distribution parameters of Ebola Virus Disease estimated from the WHO Ebola Response Team in 2015
 
 # Load required packages

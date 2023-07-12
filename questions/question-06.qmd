@@ -1,9 +1,14 @@
 ---
-title: "How to calculate the final size of an epidemic accounting for heterogeneous social contact and homogeneous susceptibility in all age groups?"
-format: html
+title: "How to calculate the final size of an epidemic accounting for heterogeneous social contact?"
+format: 
+  html:
+    code-link: true
 editor: source
 editor_options: 
   chunk_output_type: console
+date: last-modified
+toc: true
+toc_float: true
 ---
 
 ## Topic
@@ -25,11 +30,14 @@ NOT USED: Use tidyverse packages as much as you can to: select columns, filter r
 How to calculate the final size of an epidemic accounting for heterogeneous social contact and homogeneous susceptibility in all age groups?
 
 Conditions:
-- 
+- (pending)
 
-### A6
+### Answer
 
 ```{r}
+#| warning: false
+#| eval: false
+
 # Calculate the final size of an epidemic
 
 library(finalsize)
@@ -96,6 +104,8 @@ final_size(
   p_susceptibility = p_susceptibility
 )
 ```
+
+- (pending)
 
 Please note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the `install.packages("pak")` function and then the `pak::pak()` function for both packages in CRAN or GitHub before loading them with `library()`. 
 

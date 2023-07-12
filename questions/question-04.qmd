@@ -1,9 +1,14 @@
 ---
 title: "How to project the future trajectory of the outbreak?"
-format: html
+format: 
+  html:
+    code-link: true
 editor: source
 editor_options: 
   chunk_output_type: console
+date: last-modified
+toc: true
+toc_float: true
 ---
 
 ## Topic
@@ -25,11 +30,14 @@ NOT USED: Use tidyverse packages as much as you can to: select columns, filter r
 How to project the future trajectory of the outbreak?
 
 Conditions:
-- 
+- (pending)
 
-### A4
+### Answer
 
 ```{r}
+#| warning: false
+#| eval: false
+
 # Forecast the future trajectory of the outbreak
 
 # Load required packages
@@ -117,6 +125,7 @@ plot(incidence1_filter) %>%
   )
 ```
 
+- (pending)
 - Project over two weeks
 
 Please note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the `install.packages("pak")` function and then the `pak::pak()` function for both packages in CRAN or GitHub before loading them with `library()`. 
