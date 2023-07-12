@@ -27,15 +27,15 @@ How to include heterogeneous susceptibility in a population to simulate the fina
 Conditions:
 - Create the two susceptibility matrices needed for the `finalsize` package.
 - The population is divided into five age groups: 0 – 4, 5 – 17, 18 – 39, 40 – 64, and 65 and over.
+- An immunization campaign generated within age group variation in susceptibility.
+- The immunization effect for all age groups is 25%.
 - The infection susceptibility between age group differs in the following way:
     - 20% in age group 0 – 4, 
     - 50% in age group 5 – 17,
     - 60% in age group 18 – 39,
     - 90% in age group 40 – 64,
     - 100% in age group of 65 and over,
-- An immunization campaign generated within age group variation in susceptibility.
-- The immunization effect for all age groups is 25%.
-- The known percentage of the immunized population in all age groups is 40%.
+- The percentage of the unimmunized population in all age groups is 60%.
 
 ### Answer
 
