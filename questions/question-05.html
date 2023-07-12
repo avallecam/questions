@@ -141,13 +141,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#topic" id="toc-topic" class="nav-link active" data-scroll-target="#topic">Topic</a></li>
   <li><a href="#introductory-prompt" id="toc-introductory-prompt" class="nav-link" data-scroll-target="#introductory-prompt">Introductory prompt</a></li>
-  <li>
-<a href="#question" id="toc-question" class="nav-link" data-scroll-target="#question">Question</a>
-  <ul class="collapse">
-<li><a href="#answer" id="toc-answer" class="nav-link" data-scroll-target="#answer">Answer</a></li>
+  <li><a href="#question" id="toc-question" class="nav-link" data-scroll-target="#question">Question</a></li>
+  <li><a href="#answer" id="toc-answer" class="nav-link" data-scroll-target="#answer">Answer</a></li>
   <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
-  </ul>
-</li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/epiverse-trace/questions/edit/main/questions/question-05.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/epiverse-trace/questions/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -178,8 +174,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator.</code></pre>
 </section><section id="question" class="level2"><h2 class="anchored" data-anchor-id="question">Question</h2>
 <p>How to include heterogeneous susceptibility in a population to simulate the final size of an epidemic?</p>
-<p>Conditions: - Create the two susceptibility matrices needed for the <code>finalsize</code> package. - The population is divided into five age groups: 0 – 4, 5 – 17, 18 – 39, 40 – 64, and 65 and over. - An immunization campaign generated within age group variation in susceptibility. - The immunization effect for all age groups is 25%. - The infection susceptibility between age group differs in the following way: - 20% in age group 0 – 4, - 50% in age group 5 – 17, - 60% in age group 18 – 39, - 90% in age group 40 – 64, - 100% in age group of 65 and over, - The percentage of the unimmunized population in all age groups is 60%.</p>
-<section id="answer" class="level3"><h3 class="anchored" data-anchor-id="answer">Answer</h3>
+<p>Conditions:</p>
+<ul>
+<li>Create the two susceptibility matrices needed for the <code>finalsize</code> package.</li>
+<li>The population is divided into five age groups: 0 – 4, 5 – 17, 18 – 39, 40 – 64, and 65 and over.</li>
+<li>An immunization campaign generated within age group variation in susceptibility.</li>
+<li>The immunization effect for all age groups is 25%.</li>
+<li>The infection susceptibility between age group differs in the following way:
+<ul>
+<li>20% in age group 0 – 4,</li>
+<li>50% in age group 5 – 17,</li>
+<li>60% in age group 18 – 39,</li>
+<li>90% in age group 40 – 64,</li>
+<li>100% in age group of 65 and over,</li>
+</ul>
+</li>
+<li>The percentage of the unimmunized population in all age groups is 60%.</li>
+</ul></section><section id="answer" class="level2"><h2 class="anchored" data-anchor-id="answer">Answer</h2>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Create the susceptibility matrices for variability between and within groups</span></span>
 <span></span>
@@ -235,13 +246,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Please note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the <code>install.packages("pak")</code> function and then the <code><a href="http://pak.r-lib.org/reference/pak.html">pak::pak()</a></code> function for both packages in CRAN or GitHub before loading them with <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>.</p>
 <p>Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.</p>
-</section><section id="reference" class="level3"><h3 class="anchored" data-anchor-id="reference">Reference</h3>
+</section><section id="reference" class="level2"><h2 class="anchored" data-anchor-id="reference">Reference</h2>
 <ul>
 <li>https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html</li>
 </ul>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");

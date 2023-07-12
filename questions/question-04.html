@@ -141,13 +141,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
 <li><a href="#topic" id="toc-topic" class="nav-link active" data-scroll-target="#topic">Topic</a></li>
   <li><a href="#introductory-prompt" id="toc-introductory-prompt" class="nav-link" data-scroll-target="#introductory-prompt">Introductory prompt</a></li>
-  <li>
-<a href="#question" id="toc-question" class="nav-link" data-scroll-target="#question">Question</a>
-  <ul class="collapse">
-<li><a href="#answer" id="toc-answer" class="nav-link" data-scroll-target="#answer">Answer</a></li>
+  <li><a href="#question" id="toc-question" class="nav-link" data-scroll-target="#question">Question</a></li>
+  <li><a href="#answer" id="toc-answer" class="nav-link" data-scroll-target="#answer">Answer</a></li>
   <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
-  </ul>
-</li>
   </ul><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/epiverse-trace/questions/edit/main/questions/question-04.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/epiverse-trace/questions/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
@@ -178,8 +174,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>NOT USED: Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator.</code></pre>
 </section><section id="question" class="level2"><h2 class="anchored" data-anchor-id="question">Question</h2>
 <p>How to project the future trajectory of the outbreak?</p>
-<p>Conditions: - (pending)</p>
-<section id="answer" class="level3"><h3 class="anchored" data-anchor-id="answer">Answer</h3>
+<p>Conditions:</p>
+<ul>
+<li>(pending)</li>
+</ul></section><section id="answer" class="level2"><h2 class="anchored" data-anchor-id="answer">Answer</h2>
 <div class="cell">
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Forecast the future trajectory of the outbreak</span></span>
 <span></span>
@@ -273,7 +271,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Please note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the <code>install.packages("pak")</code> function and then the <code><a href="http://pak.r-lib.org/reference/pak.html">pak::pak()</a></code> function for both packages in CRAN or GitHub before loading them with <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>.</p>
 <p>Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.</p>
-</section><section id="reference" class="level3"><h3 class="anchored" data-anchor-id="reference">Reference</h3>
+</section><section id="reference" class="level2"><h2 class="anchored" data-anchor-id="reference">Reference</h2>
 <ul>
 <li>https://epiverse-trace.github.io/epiparameter/articles/extract_convert.html</li>
 <li>http://www.repidemicsconsortium.org/epitrix/reference/r2R0.html</li>
@@ -282,7 +280,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 
 
-</section></section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
     const mode = bsSheetEl.getAttribute("data-mode");
