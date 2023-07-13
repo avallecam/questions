@@ -16,10 +16,10 @@ website:
       - icon: github
         menu:
           - text: Source Code
-            url:  https://github.com/epiverse-trace/questions
+            url:  https://github.com/avallecam/questions
           - text: Report a Bug
-            url:  https://github.com/epiverse-trace/questions/issues
-  repo-url: https://github.com/epiverse-trace/questions/
+            url:  https://github.com/avallecam/questions/issues
+  repo-url: https://github.com/avallecam/questions/
   repo-actions: [edit, issue]
 
 format:
