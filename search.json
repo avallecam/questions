@@ -172,7 +172,7 @@
     "href": "questions/question-04.html#introductory-prompt",
     "title": "How to project the future trajectory of the outbreak?",
     "section": "Introductory prompt",
-    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nNOT USED: Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
+    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
   },
   {
     "objectID": "questions/question-04.html#question",
@@ -256,7 +256,7 @@
     "href": "questions/question-06.html#introductory-prompt",
     "title": "How to calculate the final size of an epidemic accounting for heterogeneous social contact?",
     "section": "Introductory prompt",
-    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nNOT USED: Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
+    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
   },
   {
     "objectID": "questions/question-06.html#question",
