@@ -103,8 +103,6 @@ p_susceptibility
 
 Please note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the `install.packages("pak")` function and then the `pak::pak()` function for both packages in CRAN or GitHub before loading them with `library()`. 
 
-Additionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing.
-
 ## Reference
 
 - https://epiverse-trace.github.io/finalsize/articles/susceptibility_matrices.html
