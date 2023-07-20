@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.333">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-07-12">
-<title>questions - How to calculate the weekly growth rate of an outbreak?</title>
+<meta name="dcterms.date" content="2023-07-20">
+<title>questions - How to estimate the weekly growth rate?</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -148,7 +148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><div class="quarto-title">
-<h1 class="title">How to calculate the weekly growth rate of an outbreak?</h1>
+<h1 class="title">How to estimate the weekly growth rate?</h1>
 </div>
 
 
@@ -159,7 +159,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 12, 2023</p>
+      <p class="date">July 20, 2023</p>
     </div>
   </div>
   
@@ -170,21 +170,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="topic" class="level2"><h2 class="anchored" data-anchor-id="topic">Topic</h2>
 <p>growth rate</p>
 </section><section id="introductory-prompt" class="level2"><h2 class="anchored" data-anchor-id="introductory-prompt">Introductory prompt</h2>
-<pre><code>You are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.</code></pre>
-<pre><code>Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator.</code></pre>
+<p>You are R software teacher specializing in outbreak analytics and epidemic modelling. Give your answer entirely as R code, and include some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.</p>
+<p>Use tidyverse packages as much as you can to select columns, filter rows, mutate new columns, pull columns out of a data frame, create tibble objects, and pipe functions with the %&gt;% operator.</p>
 </section><section id="question" class="level2"><h2 class="anchored" data-anchor-id="question">Question</h2>
 <p>How to calculate the weekly growth rate of an outbreak?</p>
 <p>Conditions:</p>
 <ul>
-<li>Use the first list element from the Simulated Ebola outbreak ebola_sim_clean object from the outbreaks R package. The name of the first element is linelist.</li>
-<li>Use the “date of onset” column to calculate the weekly growth rate.</li>
-<li>Keep the first 20 weeks of the period of the analysis.</li>
+<li>Calculate the weekly growth rate from data collected per day.</li>
+<li>Use the <code>linelist</code> object in the <code>ebola_sim_clean</code> list from the <a href="https://github.com/reconhub/outbreaks">outbreaks</a> R package. <code>linelist</code> is an outbreak data set.</li>
+<li>Use the <code>date_of _onset</code> column of <code>linelist</code> to calculate the weekly growth rate.</li>
+<li>Keep the first 20 weeks in <code>linelist</code> as period of analysis.</li>
 </ul></section><section id="answer" class="level2"><h2 class="anchored" data-anchor-id="answer">Answer</h2>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate the weekly growth rate of an outbreak</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate the weekly growth rate of an outbreak</span></span>
 <span></span>
 <span><span class="co"># Load required packages</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/reconhub/outbreaks">outbreaks</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/reconverse/incidence2">incidence2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.reconverse.org/i2extras/">i2extras</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
 <span></span>
@@ -192,26 +194,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">ebola_sim_clean</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Extract the first element of the list</span></span>
-<span><span class="va">linelist</span> <span class="op">&lt;-</span> <span class="va">ebola_sim_clean</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">linelist</span> <span class="op">&lt;-</span> <span class="va">ebola_sim_clean</span><span class="op">$</span><span class="va">linelist</span></span>
 <span></span>
 <span><span class="co"># Convert the data to an incidence2 object</span></span>
-<span><span class="va">incidence2_data</span> <span class="op">&lt;-</span> <span class="fu">incidence2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/incidence2/man/incidence.html">incidence</a></span><span class="op">(</span></span>
-<span>  x <span class="op">=</span> <span class="va">linelist</span>, </span>
-<span>  date_index <span class="op">=</span> <span class="st">"date_of_onset"</span>,</span>
-<span>  interval <span class="op">=</span> <span class="st">"week"</span></span>
-<span><span class="op">)</span></span>
+<span><span class="va">incidence2_data</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">incidence2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/incidence2/man/incidence.html">incidence</a></span><span class="op">(</span></span>
+<span>    x <span class="op">=</span> <span class="va">linelist</span>, </span>
+<span>    date_index <span class="op">=</span> <span class="st">"date_of_onset"</span>,</span>
+<span>    interval <span class="op">=</span> <span class="st">"week"</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Filter the dataset to keep the first 20 weeks. </span></span>
 <span><span class="va">incidence2_filter</span> <span class="op">&lt;-</span> <span class="va">incidence2_data</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span>,<span class="op">]</span></span>
 <span></span>
 <span><span class="co"># Model the incidence</span></span>
-<span><span class="va">incidence2_fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://www.reconverse.org/i2extras/reference/fit_curve.html">fit_curve</a></span><span class="op">(</span><span class="va">incidence2_filter</span>, model <span class="op">=</span> <span class="st">"poisson"</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="va">incidence2_fit</span> <span class="op">&lt;-</span> </span>
+<span>  <span class="fu">i2extras</span><span class="fu">::</span><span class="fu"><a href="http://www.reconverse.org/i2extras/reference/fit_curve.html">fit_curve</a></span><span class="op">(</span></span>
+<span>    <span class="va">incidence2_filter</span>, </span>
+<span>    model <span class="op">=</span> <span class="st">"poisson"</span>, </span>
+<span>    alpha <span class="op">=</span> <span class="fl">0.05</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Print the result</span></span>
-<span><span class="fu"><a href="http://www.reconverse.org/i2extras/reference/growth_rate.html">growth_rate</a></span><span class="op">(</span><span class="va">incidence2_fit</span><span class="op">)</span></span>
+<span><span class="co"># Print the model result</span></span>
+<span><span class="fu">i2extras</span><span class="fu">::</span><span class="fu"><a href="http://www.reconverse.org/i2extras/reference/growth_rate.html">growth_rate</a></span><span class="op">(</span><span class="va">incidence2_fit</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Plot the result</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">incidence2_fit</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span><span class="co"># Plot the model result with prediction intervals</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">incidence2_fit</span>, ci <span class="op">=</span> <span class="cn">FALSE</span>, pi <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>The <code>outbreaks</code> package is loaded to access the simulated Ebola outbreak data.</li>

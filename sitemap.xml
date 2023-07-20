@@ -2,34 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://avallecam.github.io/questions/about.html</loc>
-    <lastmod>2023-07-18T20:09:40.019Z</lastmod>
+    <lastmod>2023-07-20T20:46:14.208Z</lastmod>
   </url>
   <url>
     <loc>https://avallecam.github.io/questions/index.html</loc>
-    <lastmod>2023-07-18T20:09:43.709Z</lastmod>
+    <lastmod>2023-07-20T20:46:16.651Z</lastmod>
+  </url>
+  <url>
+    <loc>https://avallecam.github.io/questions/prompts/prompt_01.html</loc>
+    <lastmod>2023-07-20T20:46:17.432Z</lastmod>
+  </url>
+  <url>
+    <loc>https://avallecam.github.io/questions/prompts/prompt_02.html</loc>
+    <lastmod>2023-07-20T20:46:18.172Z</lastmod>
   </url>
   <url>
     <loc>https://avallecam.github.io/questions/questions/question-01.html</loc>
-    <lastmod>2023-07-18T20:10:13.085Z</lastmod>
+    <lastmod>2023-07-20T20:46:46.642Z</lastmod>
   </url>
   <url>
     <loc>https://avallecam.github.io/questions/questions/question-02.html</loc>
-    <lastmod>2023-07-18T20:10:40.265Z</lastmod>
+    <lastmod>2023-07-20T20:47:08.298Z</lastmod>
   </url>
   <url>
     <loc>https://avallecam.github.io/questions/questions/question-03.html</loc>
-    <lastmod>2023-07-18T20:11:13.641Z</lastmod>
+    <lastmod>2023-07-20T20:47:40.113Z</lastmod>
   </url>
   <url>
     <loc>https://avallecam.github.io/questions/questions/question-04.html</loc>
-    <lastmod>2023-07-18T20:11:44.566Z</lastmod>
+    <lastmod>2023-07-20T20:48:15.366Z</lastmod>
   </url>
   <url>
     <loc>https://avallecam.github.io/questions/questions/question-05.html</loc>
-    <lastmod>2023-07-18T20:12:07.606Z</lastmod>
+    <lastmod>2023-07-20T20:48:39.057Z</lastmod>
   </url>
   <url>
     <loc>https://avallecam.github.io/questions/questions/question-06.html</loc>
-    <lastmod>2023-07-18T20:12:32.355Z</lastmod>
+    <lastmod>2023-07-20T20:49:04.561Z</lastmod>
   </url>
 </urlset>

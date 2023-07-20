@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.3.333">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="dcterms.date" content="2023-07-12">
+<meta name="dcterms.date" content="2023-07-20">
 <title>questions - How to calculate the final size of an epidemic accounting for heterogeneous social contact?</title>
 <style>
 code{white-space: pre-wrap;}
@@ -163,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">July 12, 2023</p>
+      <p class="date">July 20, 2023</p>
     </div>
   </div>
   
@@ -174,8 +174,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><section id="topic" class="level2"><h2 class="anchored" data-anchor-id="topic">Topic</h2>
 <p>final size of an epidemic</p>
 </section><section id="introductory-prompt" class="level2"><h2 class="anchored" data-anchor-id="introductory-prompt">Introductory prompt</h2>
-<pre><code>You are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.</code></pre>
-<pre><code>Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator.</code></pre>
+<p>You are R software teacher specializing in outbreak analytics and epidemic modelling. Give your answer entirely as R code, and include some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.</p>
+<p>Use tidyverse packages as much as you can to select columns, filter rows, mutate new columns, pull columns out of a data frame, create tibble objects, and pipe functions with the %&gt;% operator.</p>
 </section><section id="question" class="level2"><h2 class="anchored" data-anchor-id="question">Question</h2>
 <p>How to calculate the final size of an epidemic accounting for heterogeneous social contact and homogeneous susceptibility in all age groups?</p>
 <p>Conditions:</p>
@@ -184,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <section id="answer" class="level3"><h3 class="anchored" data-anchor-id="answer">Answer</h3>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate the final size of an epidemic</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate the final size of an epidemic</span></span>
 <span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiverse-trace/finalsize">finalsize</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/epiforecasts/socialmixr">socialmixr</a></span><span class="op">)</span></span>

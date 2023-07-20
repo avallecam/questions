@@ -18,7 +18,7 @@
     "href": "index.html#qas",
     "title": "Get started",
     "section": "Q&A’s",
-    "text": "Q&A’s\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\n\n\n\nHow to calculate the final size of an epidemic accounting for heterogeneous social contact?\n\n\n\n\nHow to calculate the weekly growth rate of an outbreak?\n\n\n\n\nHow to extract the serial interval distribution parameters of Ebola Virus Disease?\n\n\n\n\nHow to include heterogeneous susceptibility in a population to simulate the final size of an epidemic?\n\n\n\n\nHow to project the future trajectory of the outbreak?\n\n\n\n\nHow to quantify the time-varying reproduction number (Rt)?\n\n\n\n\n\n\nNo matching items"
+    "text": "Q&A’s\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nTitle\n\n\n\n\n\n\nHow to calculate the final size of an epidemic accounting for heterogeneous social contact?\n\n\n\n\nHow to estimate the weekly growth rate?\n\n\n\n\nHow to extract the serial interval distribution parameters of Ebola Virus Disease?\n\n\n\n\nHow to include heterogeneous susceptibility in a population to simulate the final size of an epidemic?\n\n\n\n\nHow to project the future trajectory of the outbreak?\n\n\n\n\nHow to quantify the time-varying reproduction number (Rt)?\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html#more",
@@ -28,44 +28,58 @@
     "text": "More\nRefer to the About page for more details about the rationale behind the design of this site."
   },
   {
+    "objectID": "prompts/prompt_01.html",
+    "href": "prompts/prompt_01.html",
+    "title": "questions",
+    "section": "",
+    "text": "You are R software teacher specializing in outbreak analytics and epidemic modelling. Give your answer entirely as R code, and include some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code."
+  },
+  {
+    "objectID": "prompts/prompt_02.html",
+    "href": "prompts/prompt_02.html",
+    "title": "questions",
+    "section": "",
+    "text": "Use tidyverse packages as much as you can to select columns, filter rows, mutate new columns, pull columns out of a data frame, create tibble objects, and pipe functions with the %&gt;% operator."
+  },
+  {
     "objectID": "questions/question-01.html",
     "href": "questions/question-01.html",
-    "title": "How to calculate the weekly growth rate of an outbreak?",
+    "title": "How to estimate the weekly growth rate?",
     "section": "",
     "text": "growth rate"
   },
   {
     "objectID": "questions/question-01.html#topic",
     "href": "questions/question-01.html#topic",
-    "title": "How to calculate the weekly growth rate of an outbreak?",
+    "title": "How to estimate the weekly growth rate?",
     "section": "",
     "text": "growth rate"
   },
   {
     "objectID": "questions/question-01.html#introductory-prompt",
     "href": "questions/question-01.html#introductory-prompt",
-    "title": "How to calculate the weekly growth rate of an outbreak?",
+    "title": "How to estimate the weekly growth rate?",
     "section": "Introductory prompt",
-    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
+    "text": "Introductory prompt\nYou are R software teacher specializing in outbreak analytics and epidemic modelling. Give your answer entirely as R code, and include some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to select columns, filter rows, mutate new columns, pull columns out of a data frame, create tibble objects, and pipe functions with the %&gt;% operator."
   },
   {
     "objectID": "questions/question-01.html#question",
     "href": "questions/question-01.html#question",
-    "title": "How to calculate the weekly growth rate of an outbreak?",
+    "title": "How to estimate the weekly growth rate?",
     "section": "Question",
-    "text": "Question\nHow to calculate the weekly growth rate of an outbreak?\nConditions:\n\nUse the first list element from the Simulated Ebola outbreak ebola_sim_clean object from the outbreaks R package. The name of the first element is linelist.\nUse the “date of onset” column to calculate the weekly growth rate.\nKeep the first 20 weeks of the period of the analysis."
+    "text": "Question\nHow to calculate the weekly growth rate of an outbreak?\nConditions:\n\nCalculate the weekly growth rate from data collected per day.\nUse the linelist object in the ebola_sim_clean list from the outbreaks R package. linelist is an outbreak data set.\nUse the date_of _onset column of linelist to calculate the weekly growth rate.\nKeep the first 20 weeks in linelist as period of analysis."
   },
   {
     "objectID": "questions/question-01.html#answer",
     "href": "questions/question-01.html#answer",
-    "title": "How to calculate the weekly growth rate of an outbreak?",
+    "title": "How to estimate the weekly growth rate?",
     "section": "Answer",
-    "text": "Answer\n\n# Calculate the weekly growth rate of an outbreak\n\n# Load required packages\nlibrary(outbreaks)\nlibrary(i2extras)\nlibrary(dplyr)\n\n# Load the simulated Ebola outbreak data\ndata(ebola_sim_clean)\n\n# Extract the first element of the list\nlinelist &lt;- ebola_sim_clean[[1]]\n\n# Convert the data to an incidence2 object\nincidence2_data &lt;- incidence2::incidence(\n  x = linelist, \n  date_index = \"date_of_onset\",\n  interval = \"week\"\n)\n\n# Filter the dataset to keep the first 20 weeks. \nincidence2_filter &lt;- incidence2_data[1:20,]\n\n# Model the incidence\nincidence2_fit &lt;- fit_curve(incidence2_filter, model = \"poisson\", alpha = 0.05)\n\n# Print the result\ngrowth_rate(incidence2_fit)\n\n# Plot the result\nplot(incidence2_fit)\n\n\nThe outbreaks package is loaded to access the simulated Ebola outbreak data.\nThe ebola_sim_clean object from the package contains the simulated outbreak data.\nThe linelist object contains the first list element from ebola_sim_clean.\nThe incidence() function from the incidence2 package converts the data object linelist to an incidence2 class object.\nThe date_of_onset column is used in the date_index argument as the onset dates of the outbreak.\nThe \"week\" text string is used to count number of cases per week interval to calculate the weekly growth rate.\n\nThe incidence2 object provides observations arranged in descendant order with respect to the date_index.\nThe number of weeks to consider is set to 20 and stored in the dat_filter object.\nThe fit_curve() function from the i2extras package fits a Poisson linear regression model to the epicurve in the dat_filter object with an alpha value of 0.05 to calculate the 95% confidence intervals.\nThe growth_rate() function calculate the weekly growth/decay rate.\nThe plot() function plot the fitted epicurve.\n\nPlease note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the install.packages(\"pak\") function and then the pak::pak() function for both packages in CRAN or GitHub before loading them with library().\nAdditionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing."
+    "text": "Answer\n\n# Calculate the weekly growth rate of an outbreak\n\n# Load required packages\nlibrary(outbreaks)\nlibrary(incidence2)\nlibrary(i2extras)\nlibrary(dplyr)\n\n# Load the simulated Ebola outbreak data\ndata(ebola_sim_clean)\n\n# Extract the first element of the list\nlinelist &lt;- ebola_sim_clean$linelist\n\n# Convert the data to an incidence2 object\nincidence2_data &lt;- \n  incidence2::incidence(\n    x = linelist, \n    date_index = \"date_of_onset\",\n    interval = \"week\"\n  )\n\n# Filter the dataset to keep the first 20 weeks. \nincidence2_filter &lt;- incidence2_data[1:20,]\n\n# Model the incidence\nincidence2_fit &lt;- \n  i2extras::fit_curve(\n    incidence2_filter, \n    model = \"poisson\", \n    alpha = 0.05\n  )\n\n# Print the model result\ni2extras::growth_rate(incidence2_fit)\n\n# Plot the model result with prediction intervals\nplot(incidence2_fit, ci = FALSE, pi = TRUE)\n\n\nThe outbreaks package is loaded to access the simulated Ebola outbreak data.\nThe ebola_sim_clean object from the package contains the simulated outbreak data.\nThe linelist object contains the first list element from ebola_sim_clean.\nThe incidence() function from the incidence2 package converts the data object linelist to an incidence2 class object.\nThe date_of_onset column is used in the date_index argument as the onset dates of the outbreak.\nThe \"week\" text string is used to count number of cases per week interval to calculate the weekly growth rate.\n\nThe incidence2 object provides observations arranged in descendant order with respect to the date_index.\nThe number of weeks to consider is set to 20 and stored in the dat_filter object.\nThe fit_curve() function from the i2extras package fits a Poisson linear regression model to the epicurve in the dat_filter object with an alpha value of 0.05 to calculate the 95% confidence intervals.\nThe growth_rate() function calculate the weekly growth/decay rate.\nThe plot() function plot the fitted epicurve.\n\nPlease note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the install.packages(\"pak\") function and then the pak::pak() function for both packages in CRAN or GitHub before loading them with library().\nAdditionally, make sure to adjust the serial interval distribution parameters according to the specific outbreak you are analyzing."
   },
   {
     "objectID": "questions/question-01.html#reference",
     "href": "questions/question-01.html#reference",
-    "title": "How to calculate the weekly growth rate of an outbreak?",
+    "title": "How to estimate the weekly growth rate?",
     "section": "Reference",
     "text": "Reference\n\nhttps://www.reconverse.org/i2extras/articles/fitting_epicurves.html"
   },
@@ -88,14 +102,14 @@
     "href": "questions/question-02.html#introductory-prompt",
     "title": "How to extract the serial interval distribution parameters of Ebola Virus Disease?",
     "section": "Introductory prompt",
-    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
+    "text": "Introductory prompt\nYou are R software teacher specializing in outbreak analytics and epidemic modelling. Give your answer entirely as R code, and include some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to select columns, filter rows, mutate new columns, pull columns out of a data frame, create tibble objects, and pipe functions with the %&gt;% operator."
   },
   {
     "objectID": "questions/question-02.html#question",
     "href": "questions/question-02.html#question",
     "title": "How to extract the serial interval distribution parameters of Ebola Virus Disease?",
     "section": "Question",
-    "text": "Question\nHow to extract the serial interval distribution parameters of Ebola Virus Disease estimated from the WHO Ebola Response Team in 2015?"
+    "text": "Question\nHow to extract the serial interval distribution from a systematic review?\nConditions:\n\nUse the distribution estimated from the WHO Ebola Response Team in 2015."
   },
   {
     "objectID": "questions/question-02.html#answer",
@@ -130,7 +144,7 @@
     "href": "questions/question-03.html#introductory-prompt",
     "title": "How to quantify the time-varying reproduction number (Rt)?",
     "section": "Introductory prompt",
-    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
+    "text": "Introductory prompt\nYou are R software teacher specializing in outbreak analytics and epidemic modelling. Give your answer entirely as R code, and include some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to select columns, filter rows, mutate new columns, pull columns out of a data frame, create tibble objects, and pipe functions with the %&gt;% operator."
   },
   {
     "objectID": "questions/question-03.html#question",
@@ -172,7 +186,7 @@
     "href": "questions/question-04.html#introductory-prompt",
     "title": "How to project the future trajectory of the outbreak?",
     "section": "Introductory prompt",
-    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
+    "text": "Introductory prompt\nYou are R software teacher specializing in outbreak analytics and epidemic modelling. Give your answer entirely as R code, and include some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to select columns, filter rows, mutate new columns, pull columns out of a data frame, create tibble objects, and pipe functions with the %&gt;% operator."
   },
   {
     "objectID": "questions/question-04.html#question",
@@ -214,7 +228,7 @@
     "href": "questions/question-05.html#introductory-prompt",
     "title": "How to include heterogeneous susceptibility in a population to simulate the final size of an epidemic?",
     "section": "Introductory prompt",
-    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
+    "text": "Introductory prompt\nYou are R software teacher specializing in outbreak analytics and epidemic modelling. Give your answer entirely as R code, and include some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to select columns, filter rows, mutate new columns, pull columns out of a data frame, create tibble objects, and pipe functions with the %&gt;% operator."
   },
   {
     "objectID": "questions/question-05.html#question",
@@ -256,7 +270,7 @@
     "href": "questions/question-06.html#introductory-prompt",
     "title": "How to calculate the final size of an epidemic accounting for heterogeneous social contact?",
     "section": "Introductory prompt",
-    "text": "Introductory prompt\nYou are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %&gt;% operator."
+    "text": "Introductory prompt\nYou are R software teacher specializing in outbreak analytics and epidemic modelling. Give your answer entirely as R code, and include some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.\nUse tidyverse packages as much as you can to select columns, filter rows, mutate new columns, pull columns out of a data frame, create tibble objects, and pipe functions with the %&gt;% operator."
   },
   {
     "objectID": "questions/question-06.html#question",
