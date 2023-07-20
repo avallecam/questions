@@ -27,7 +27,11 @@ epidemiological parameters
 
 ## Question 
 
-How to extract the serial interval distribution parameters of Ebola Virus Disease estimated from the WHO Ebola Response Team in 2015?
+How to extract the serial interval distribution from a systematic review?
+
+Conditions:
+
+- Use the distribution estimated from the WHO Ebola Response Team in 2015.
 
 ## Answer
 
