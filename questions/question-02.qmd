@@ -17,12 +17,12 @@ epidemiological parameters
 
 ## Introductory prompt
 
-```
-You are R software teacher specialising in outbreak analytics and epidemic modelling. Give your answer entirely as R code, including some brief comments explaining key parts of the code. Do not include the original question in your response. Begin your response with a commented line introducing the code.
+```{r}
+#| child: '../prompts/prompt_01.qmd'
 ```
 
-```
-Use tidyverse packages as much as you can to: select columns, filter rows, mutate new columns, pull columns out of a dataframe, create tibble objects, and pipe functions with the %>% operator.
+```{r}
+#| child: '../prompts/prompt_02.qmd'
 ```
 
 ## Question 
