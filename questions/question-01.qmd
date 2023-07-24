@@ -82,17 +82,17 @@ i2extras::growth_rate(incidence2_fit)
 plot(incidence2_fit, ci = FALSE, pi = TRUE)
 ```
 
-- The `outbreaks` package is loaded to access the simulated Ebola outbreak data.
-- The `ebola_sim_clean` object from the package contains the simulated outbreak data.
-- The `linelist` object contains the first list element from `ebola_sim_clean`.
-- The `incidence()` function from the `incidence2` package converts the data object `linelist` to an `incidence2` class object.
-- The `date_of_onset` column is used in the `date_index` argument as the onset dates of the outbreak.
-- The `"week"` text string is used to count number of cases per week interval to calculate the weekly growth rate.  
-- The `incidence2` object provides observations arranged in descendant order with respect to the `date_index`.
-- The number of weeks to consider is set to 20 and stored in the `dat_filter` object.
-- The `fit_curve()` function from the `i2extras` package fits a Poisson linear regression model to the epicurve in the `dat_filter` object with an alpha value of `0.05` to calculate the 95% confidence intervals.
-- The `growth_rate()` function calculate the weekly growth/decay rate.
-- The `plot()` function plot the fitted epicurve.
+- `outbreaks` package loaded for simulated Ebola data.
+- `ebola_sim_clean` has the data.
+- `linelist` is first element of `ebola_sim_clean`.
+- `incidence()` converts `linelist` to `incidence2` object.
+- `date_of_onset` column is onset dates of outbreak.
+- `"week"` counts cases per week interval for growth rate.
+- `incidence2` object has observations in descending order by `date_index`.
+- 20 weeks considered and stored in `dat_filter`.
+- `fit_curve()` fits Poisson linear regression to epicurve in `dat_filter` with alpha 0.05 for 95% confidence intervals.
+- `growth_rate()` calculates weekly growth/decay rate.
+- `plot()` plots fitted epicurve.
 
 Please note that the code assumes the necessary packages are already installed. If they are not, you can install them using first the `install.packages("pak")` function and then the `pak::pak()` function for both packages in CRAN or GitHub before loading them with `library()`. 
 
